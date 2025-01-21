@@ -1,0 +1,19 @@
+.drag
+{
+    background-color: rebeccapurple;
+    height: 5vh;
+    width: 5vh;
+}
+#table{
+    border: solid;
+    border-collapse: collapse;
+}
+td{
+    
+    
+    height: 5vh;
+    width: 5vh;
+    overflow: hidden;
+    ;
+  
+}
