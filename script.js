@@ -1,7 +1,6 @@
-let delay = [];
-let notename = [];
-let count = 1; // Keep track of unique IDs
-let tempo = 1; // Default tempo
+let notes = []; // store each note's ID, type, and X position
+let count = 1;
+let tempo = 1;
 
 document.addEventListener('DOMContentLoaded', function () {
   const gridContainer = document.getElementById('grid-container');
@@ -12,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const nuty = document.getElementById('nuty');
   const line = document.getElementById('linia');
 
-  // Handle tempo changes
   document.getElementById('tempo').addEventListener('input', function () {
     tempo = this.value * 0.01;
   });
@@ -26,34 +24,31 @@ document.addEventListener('DOMContentLoaded', function () {
     gridContainer.appendChild(cell);
   }
 
-  // General function to create draggable notes
   function makeNote(note, container) {
     const div = document.createElement('div');
-    div.setAttribute('id', note + count); // Unique ID for each note
+    div.setAttribute('id', note + count);
     div.setAttribute('class', note);
     div.setAttribute('draggable', 'true');
     div.innerHTML = note;
 
-    // Attach drag events
     div.addEventListener('dragstart', dragStart);
-    div.addEventListener('dragend', (e) => {
+    div.addEventListener('dragend', () => {
       if (!div.dataset.placed) {
         count++;
-        makeNote(note, container); // Create new note only once
-        div.dataset.placed = "true"; // Mark note as placed to prevent duplication
+        makeNote(note, container);
+        div.dataset.placed = "true";
       }
     });
 
     container.appendChild(div);
   }
 
-  // Create initial notes
+  // Initial notes
   makeNote('G', Gdiv);
   makeNote('C', Cdiv);
   makeNote('E', Ediv);
   makeNote('A', Adiv);
 
-  // Drag and Drop events
   gridContainer.addEventListener('dragover', allowDrop);
   gridContainer.addEventListener('drop', drop);
 
@@ -71,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const draggedElement = document.getElementById(data);
 
     const gridRect = gridContainer.getBoundingClientRect();
-    const cellSize = 5 * window.innerHeight / 100; // Grid cell size
+    const cellSize = 5 * window.innerHeight / 100;
     const y = Math.floor((ev.clientY - gridRect.top) / cellSize);
     const gridCols = 20;
     const cellIndex = y * gridCols;
@@ -79,62 +74,81 @@ document.addEventListener('DOMContentLoaded', function () {
     const cells = document.querySelectorAll('#grid-container .cell');
     const targetCell = cells[cellIndex];
 
-    // Set note position
     draggedElement.style.top = targetCell.offsetTop + "px";
     draggedElement.style.left = ev.clientX - gridRect.left - draggedElement.offsetWidth / 2 + "px";
 
-    // Ensure the element is placed inside the grid
     ev.target.appendChild(draggedElement);
     draggedElement.classList.add('placed');
 
-    // Update position for playback
+    // Get pitch directly from the slider
+    
+
+    const noteId = draggedElement.id;
+    const noteType = draggedElement.classList[0];
+    const notePosition = draggedElement.getBoundingClientRect().left;
+
+    // Push note with updated pitch value
+    notes.push({
+        id: noteId,
+        type: noteType,
+        position: notePosition,
+        pitch: document.getElementById('pitch-slider').value
+    });
+
     updateNotePosition(draggedElement);
-  }
+}
 
-  // Update note position and sound list
+
   function updateNotePosition(draggedElement) {
-    const noteName = draggedElement.classList[0];
-    const notePosition = draggedElement.getBoundingClientRect();
+    const noteId = draggedElement.id;
+    const noteType = draggedElement.classList[0];
+    const notePosition = draggedElement.getBoundingClientRect().left;
 
-    // Find and update existing note position
-    const index = notename.indexOf(noteName);
-    if (index !== -1) {
-      delay[index] = notePosition.left; // Update position
-    } else {
-      delay.push(notePosition.left);
-      notename.push(noteName);
-    }
+    // Remove any old entry for this note
+    notes = notes.filter(n => n.id !== noteId);
+
+    notes.push({
+      id: noteId,
+      type: noteType,
+      position: notePosition,
+      pitch: document.getElementById('pitch-slider').value
+    });
   }
 
-  // Handle playback and line movement
   document.addEventListener('keydown', (ev) => {
     if (ev.key === 'p') {
       Play();
       Move();
+      
+    } else if (ev.key === 'b') {
+      Note_Opening(mouse_x, mouse_y);
+    }
+    else if (ev.key === 'c') {
+      console.log(notes);
     }
   });
 
   function Play() {
-    for (let i = 0; i < delay.length; i++) {
+    for (let i = 0; i < notes.length; i++) {
       setTimeout(() => {
-        const audio = new Audio(`${notename[i]}.mp3`);
+        const note = notes[i];
+        // Create the path based on note type and pitch
+        const audio = new Audio(`${note.type}/${note.type}${note.pitch}.mp3`);
+        console.log(`${note.type}/${note.type}${note.pitch}.mp3`);
         audio.play();
-      }, delay[i] / tempo);
+      }, notes[i].position / tempo);
     }
   }
+  
+  
 
   function Move() {
-    const maxPosition = Math.max(...delay);
+    if (notes.length === 0) return;
+    const maxPosition = Math.max(...notes.map(n => n.position));
     line.style.transition = `left ${maxPosition / tempo}ms linear`;
     line.style.left = maxPosition + "px";
+    
   }
-
-  // Handle note menu (b key)
-  document.addEventListener('keydown', (ev) => {
-    if (ev.key === 'b') {
-      Note_Opening(mouse_x, mouse_y);
-    }
-  });
 
   let mouse_x = 0, mouse_y = 0;
   document.addEventListener('mousemove', (ev) => {
@@ -148,5 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
     nuty.style.top = (y - nuty.offsetHeight / 2) + "px";
     nuty.style.left = (x - nuty.offsetWidth / 2) + "px";
   }
+  
+  
 });
-//https://codepen.io/tomhermans/pen/vYQpwwy
