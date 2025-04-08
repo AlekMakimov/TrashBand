@@ -1,19 +1,71 @@
-.drag
-{
-    background-color: rebeccapurple;
-    height: 5vh;
-    width: 5vh;
-}
-#table{
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(20, 5vh); /* 20 kolumn */
+    grid-template-rows: repeat(20, 5vh); /* 20 wierszy */
+    
     border: solid;
+    position: absolute;
     border-collapse: collapse;
+   
 }
-td{
+#grid-container .cell {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  width: 100%;
+}
+.G,.C,.E,.A {
+    transform: translateZ(0);
     
-    
-    height: 5vh;
     width: 5vh;
-    overflow: hidden;
-    ;
+    height: 5vh;
+    
+    cursor: move;
+    position: absolute; 
+    left: 0;
+}
+.G
+{
+    background-color: #00f7ff;
+}
+.C
+{
+    background-color: #d0ff00;
+}
+.E
+{
+    background-color: #2e233f;
+}
+.A
+{
+    background-color: #ffa600;
+}
+#nuty div {
+    position: relative;
+    z-index: 1;
+  }
+  #G,#C,#E,#A {
+    position: relative;
+    display: flex;
+    
+  }
+#nuty {
   
+  height: 10vh;
+  aspect-ratio: 1/1;
+  
+  visibility:  hidden;
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+    
+}
+#linia {
+    width: 5px;
+    height: 100vh;
+    z-index: 20;
+    border: solid 1px black;
+    position: absolute;
+    background-color: red;
+    
 }

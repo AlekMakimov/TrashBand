@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrashBand</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- jQuery oraz jQuery UI -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
-
-
-
-
-<br>
-
-<table id="table">
-
-</table>
-<script src="script.js"></script>
+    <div id="linia"></div>
+    <input type="number"  id="tempo">
+  <div id="grid-container"></div>
+  <div id="nuty">
+  <input type="range" id="pitch-slider" min="0" max="12" value="0" step="1">
+  <div id="G"></div>
+  <div id="C"></div>
+  <div id="E"></div>
+  <div id="A"></div>
+  </div>
+  
+  <script src="script.js"></script>
 </body>
 </html>
