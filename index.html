@@ -1,22 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrashBand - Music Sequencer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
+  <!-- Landing Overlay -->
+  <div id="landing-overlay">
+    <div class="landing-content">
+      <h1 class="metal-text">TrashBand</h1>
+      <div class="button-container">
+        <button id="play-button" class="metal-button">Play</button>
+        <button id="help-button" class="metal-button">How to Use</button>
+      </div>
+      
+      <div id="help-content" class="hidden">
+        <ol>
+          <li>Press <strong>B</strong> to open the note palette</li>
+          <li>Drag notes onto the grid</li>
+          <li>Adjust pitch with the knob before placing notes</li>
+          <li>Press <strong>P</strong> to play/stop your creation</li>
+        </ol>
+      </div>
+    </div>
+  </div>
 
-
-
-
-<br>
-
-<table id="table">
-
-</table>
-<script src="script.js"></script>
+  <!-- Header -->
+  <header id="main-header" class="metal-panel">
+    <div class="logo" onclick="location.reload()">TrashBand</div>
+    <div class="controls">
+      <div class="control-group">
+        <label for="tempo">TEMPO (BPM)</label>
+        <input type="number" id="tempo" min="30" max="300" value="120" class="metal-input">
+      </div>
+      
+      
+    </div>
+    
+    <div class="instructions">
+      <span class="key">P</span> Play/Stop
+      <span class="key">B</span> Notes
+      <span class="key">S</span> Stop
+    </div>
+  </header>
+  
+  <div id="main-container">
+    <div id="linia"></div>
+    <div id="grid-container" class="metal-container"></div>
+    
+    <div id="nuty" class="metal-panel">
+      <div class="control-group">
+        <label for="pitch-slider">PITCH</label>
+        <div class="slider-container">
+          <input type="range" id="pitch-slider" min="0" max="12" value="0" step="1" class="metal-slider">
+          <div class="slider-value"><span id="pitch-value">0</span></div>
+        </div>
+      </div>
+      <div class="note-palette-header">Note Palette</div>
+      <div id="G"></div>
+      <div id="C"></div>
+      <div id="E"></div>
+      <div id="A"></div>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
 </body>
 </html>
